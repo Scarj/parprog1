@@ -1,4 +1,4 @@
-package week1
+package week1.lecture3
 
 class HelloThread extends Thread {
   override def run() {

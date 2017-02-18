@@ -1,4 +1,4 @@
-package week1
+package week1.lecture3
 
 object Main extends App {
 
