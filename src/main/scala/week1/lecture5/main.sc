@@ -14,9 +14,8 @@ object main {
     power(sumSegment(a, p, 0, a.length), 1 / p)
   }
 
-  def parallel[A, B](taskA: => A, taskB: => B): (A, B) = {
-
-    (treadA.join, treadB.join)
+  def parallel[A, B](task1: => A, task2: => B): (A, B) = {
+    (task1, task2)
   }
 
   def pNormTwoPart(a: Array[Int], p: Double): Int = {
