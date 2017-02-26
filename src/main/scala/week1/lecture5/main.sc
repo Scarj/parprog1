@@ -1,4 +1,8 @@
+import common.common._
+
 object main {
+
+  val threshold = 5
 
   def power(x: Int, p: Double): Int = math.exp(p * math.log(math.abs(x))).toInt
 
@@ -14,10 +18,6 @@ object main {
     power(sumSegment(a, p, 0, a.length), 1 / p)
   }
 
-  def parallel[A, B](task1: => A, task2: => B): (A, B) = {
-    (task1, task2)
-  }
-
   def pNormTwoPart(a: Array[Int], p: Double): Int = {
     val m = a.length / 2
     val (sum1: Int, sum2: Int) = parallel(sumSegment(a, p, 0, m), sumSegment(a, p, m, a.length))
@@ -29,7 +29,7 @@ object main {
     power(segmentRec(a, p, 0, a.length), 1 / p)
   }
 
-  def segmentRec(a: Array[Int], p: Double, s: Int, t: Int) = {
+  def segmentRec(a: Array[Int], p: Double, s: Int, t: Int): Int = {
     if (t - s < threshold) sumSegment(a, p, s, t)
     else {
       val m = s + (t - s) / 2

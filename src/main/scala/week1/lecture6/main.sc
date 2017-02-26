@@ -1,4 +1,6 @@
 import scala.util.Random
+import common.common._
+import org.scalameter._
 
 object main {
   def mcCount(iter: Int): Int = {
@@ -17,18 +19,22 @@ object main {
 
   def monteCarloPiSeq(iter: Int): Double = 4.0 * mcCount(iter) / iter
 
-
-  def parallel[A, B](task1: => A, task2: => B): (A, B) = {
-    (task1, task2)
-  }
-
   def monteCarloPiPar(iter: Int): Double = {
-    val ((pi1, pi2), (pi3, pi4)) = parallel (
-      parallel(mcCount(iter/4),mcCount(iter/4)),
-      parallel(mcCount(iter / 4), mcCount(iter - 3 * (iter / 4)))
+    val (pi1, pi2, pi3, pi4) = parallel(
+      mcCount(iter / 4), mcCount(iter / 4), mcCount(iter / 4), mcCount(iter - 3 * (iter / 4))
     )
     4.0 * (pi1 + pi2 + pi3 + pi4) / iter
   }
 
-  monteCarloPiPar(100000000)
+  val seqTime: Quantity[Double] = withWarmer(new Warmer.Default) measure {
+    monteCarloPiSeq(100000000)
+  }
+
+  val parTime: Quantity[Double] = withWarmer(new Warmer.Default) measure {
+    monteCarloPiPar(100000000)
+  }
+
+  println(s"seqTime: $seqTime")
+  println(s"parTime: $parTime")
+  println(s"seq/par: ${seqTime.value / parTime.value}")
 }
